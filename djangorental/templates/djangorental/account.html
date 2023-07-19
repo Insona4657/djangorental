@@ -10,18 +10,15 @@
         <h2>
             Email : {{ user.email }}
         </h2>
-        <!--
         <h2>
-            Address : {{ user.address }}
+            Address : {{ currentuseraddress }}
         </h2>
         <h2>
-            Phone Number: {{ user.number }} 
+            Phone Number: {{ currentusernumber }} 
         </h2>
-        -->
     </br>
     </div>
 
-    <!--
     {% if message %}
     <div>{{ message }}</div>
     {% endif %}
@@ -29,18 +26,18 @@
     <form action="{% url 'account' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
-            <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+            <input class="form-control" autofocus type="text" name="username" value="{{ user.username }}">
         </div>
         <div class="form-group">
-            <input class="form-control" type="email" name="email" placeholder="Email Address">
+            <input class="form-control" type="email" name="email" value="{{ user.email }}">
         </div>
         <div class="form-group">
-            <input class="form-control" type="address" name="address" placeholder="Address">
+            <input class="form-control" type="text" name="address" value="{{ currentuseraddress }}">
         </div>
         <div class="form-group">
-            <input class="form-control" type="number" name="number" placeholder="Contact Number">
+            <input class="form-control" type="text" name="number" value="{{ currentusernumber }}">
         </div>
         <input class="btn btn-primary" type="submit" value="Update Details">
     </form>
-    -->
+
 {% endblock %}

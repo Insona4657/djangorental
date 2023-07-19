@@ -14,14 +14,20 @@
     </form>
     <div class="row mx-3">
         {% for product in products %}
-            <div class="card_formatting">
-                <div class="card mx-3" style="width: 18rem;">
-                    <img class="card-img-top" src="{{ product.image_file }}" alt="{{ product.title }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.title }}</h5>
-                        <p class="card-text">{{ product.description }}</p>
-                        <a href="{% url 'product' id=product.id %}" class="btn btn-primary">Check Details</a>
-                    </div>
+            <div class="card mx-3" style="width: 18rem;">
+                <img class="card-img-top" src="{{ product.image_file }}" alt="{{ product.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.title }}</h5>
+                    <ul>
+                        {% for sentence in product.get_description_sentences %}
+                            <li>{{ sentence }}</li>
+                        {% endfor %}
+                        </ul>
+                    <strong>
+                    <p class="card-text">RM{{ product.price }}/Month</p>
+                    </strong>
+                </br>
+                    <a href="{% url 'product' id=product.id %}" class="btn btn-primary">Check Details</a>
                 </div>
             </div>
         {% endfor %}

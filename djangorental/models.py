@@ -1,17 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-#from phonenumber_field.modelfields import PhoneNumberField
+from phonenumber_field.modelfields import PhoneNumberField
 
 # Create your models here.
 
 class User(AbstractUser):
     pass
 
-"""class UserProfile(models.Model):
+class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    address = models.CharField(max_length=50)
-    number = models.PhoneNumberField(null=False, blank=False, unique=True)
-"""
+    address = models.CharField(max_length=100, null=True, blank=True)
+    number = PhoneNumberField(null=True, blank=True, unique=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s Profile"
+    
 class Category(models.Model):
     categoryName = models.CharField(max_length=50)
 
@@ -20,12 +23,21 @@ class Category(models.Model):
     
 class Product(models.Model):
     title = models.CharField(max_length=50)
-    description = models.CharField(max_length=300)
+    description = models.TextField(null=True, blank=True)
     image_file = models.ImageField(null=True, blank=True, upload_to='images/', default='default.jpg')
     price = models.IntegerField(default=0)
     isActive = models.BooleanField(default=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True, related_name="category")
 
+    def get_description_sentences(self):
+        if self.description:
+            return self.description.split('. ')
+        elif self.description:
+            return self.description.split('. \n')
+        elif self.description:
+            return self.description.split('. ')
+        return []
+    
     def __str__(self):
         return f"{self.title}, {self.description}, {self.price}"
     
@@ -38,4 +50,3 @@ class Comment(models.Model):
     def __str__(self):
         return f"{self.commenter} has commented{self.comment} on {self.comment_on_product}"
 
-    

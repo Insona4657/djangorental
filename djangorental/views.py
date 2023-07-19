@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import User, Category, Product, Comment
+from .models import User, Category, Product, Comment, UserProfile
 
 def addComment(request, id):
     name = Product.objects.get(pk=id)
@@ -21,7 +22,7 @@ def addComment(request, id):
 def displayCategory(request):
     if request.method == "POST":
         categoryselected = request.POST['category']
-        category = Category.objects.filter(type=request.POST['category'])
+        category = Category.objects.get(categoryName=categoryselected)
         activeproduct = Product.objects.filter(isActive=True, category=category)
         allCategories = Category.objects.all()
         return render(request, "djangorental/category.html", {
@@ -70,14 +71,16 @@ def createProduct(request):
         newProduct.save()
         return HttpResponseRedirect(reverse(index))
 
-
 def index(request):
-    activeProduct = Product.objects.filter(isActive=True)
+    activeProducts = Product.objects.filter(isActive=True)
     allCategories = Category.objects.all()
-    return render(request, "djangorental/index.html", {
-        "products": activeProduct,
-        "categories": allCategories
-    })
+
+    context = {
+        "products": activeProducts,
+        "categories": allCategories,
+    }
+
+    return render(request, "djangorental/index.html", context)
 
 
 def login_view(request):
@@ -109,8 +112,6 @@ def register(request):
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
-        address = request.POST["address"]
-        number = request.POST["number"]
 
         # Ensure password matches confirmation
         password = request.POST["password"]
@@ -122,7 +123,7 @@ def register(request):
 
         # Attempt to create new user
         try:
-            user = User.objects.create_user(username, email, password, address, number)
+            user = User.objects.create_user(username, email, password)
             user.save()
         except IntegrityError:
             return render(request, "djangorental/register.html", {
@@ -147,25 +148,52 @@ def product(request, id):
         "currentuserusername": currentuserusername,
     })
 
+@login_required
 def account(request):
+    profile = UserProfile.objects.get(user=request.user)
+    currentuserusername = request.user.username
+    currentuseremail = request.user.email
+    currentuseraddress = profile.address
+    currentusernumber = profile.number
+
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
         address = request.POST["address"]
         number = request.POST["number"]
 
-        # Update User Details
-        """try:
-            profile = UserProfile.objects.create_user(username, email, address, number)
+        try:
+            profile = UserProfile.objects.get(user=request.user)
+            user = request.user
+
+            #Update User Details
+            profile.address = address
+            profile.number = number
+            profile.save()
+            user.username = username
+            user.email = email
             user.save()
+        
+        except UserProfile.DoesNotExist:
+            return render(request, "djangorental/account.html", {
+                "message": "User profile does not exist."
+            })
         except IntegrityError:
             return render(request, "djangorental/account.html", {
                 "message": "Username already taken."
-            })"""
+            })
     else:
-        currentuserusername = request.user.username
-        currentuseremail = request.user.email
+        try:
+            profile = UserProfile.objects.get(user=request.user)
+            currentuseraddress = profile.address
+            currentusernumber = profile.number
+        except UserProfile.DoesNotExist:
+            pass
+        
+        
     return render(request, "djangorental/account.html", {
         "username" : currentuserusername,
-        "email" : currentuseremail        
+        "email" : currentuseremail,
+        "currentuseraddress" : currentuseraddress,
+        "currentusernumber": currentusernumber,           
     })
