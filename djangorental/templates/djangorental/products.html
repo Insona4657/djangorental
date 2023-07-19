@@ -1,0 +1,22 @@
+{% extends "djangorental/layout.html" %}
+
+{% block body %}
+    <h2>Products</h2>
+
+    <div class="row mx-3">
+        {% if product in products is not None %}
+            {% for product in products %}
+                <div class="card mx-3" style="width: 18rem;">
+                    <img class="card-img-top" src="{{ product.image_file }}" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <p class="card-text">Current Price: ${{ product.price }}</p>
+                        <a href="{% url 'product' id=product.id %}" class="btn btn-primary">Check Details</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif%}
+    </div>
+    
+{% endblock %}

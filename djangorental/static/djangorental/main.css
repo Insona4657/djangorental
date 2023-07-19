@@ -1,0 +1,29 @@
+html {
+    height: -webkit-fill-available;
+  }
+  body {
+      background: #fafafa;
+      color: #333333;
+      margin-top: 5rem;
+      display: flex;
+      flex-direction: column;
+      max-width: 1440px;
+      margin: 0 auto;
+      height: 100vh;
+      height: -webkit-fill-available;
+      border: 1px solid #dddddd;
+      border-radius: 3px;
+      border-bottom: #ffffff;
+    }
+    main {
+      flex: 1;
+      overflow:scroll;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      color: #444444;
+    }
+    
+    .nav bg-steel {
+      background-color: rgb(7, 78, 146);
+    }
+    
