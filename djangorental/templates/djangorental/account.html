@@ -10,12 +10,20 @@
         <h2>
             Email : {{ user.email }}
         </h2>
-        <h2>
-            Address : {{ currentuseraddress }}
-        </h2>
-        <h2>
-            Phone Number: {{ currentusernumber }} 
-        </h2>
+        {% if currentuseraddress == "update your address here" %}
+            <h2> Address : *There is no address yet. Please Update* </h2>
+        {% else %}
+            <h2>
+                Address : {{ currentuseraddress }}
+            </h2>
+        {% endif %}
+        {% if currentusernumber == "update your contact here" %}
+            <h2> Contact : *There is no contact yet. Please Update* </h2>
+        {% else %}
+            <h2>
+                Phone Number: {{ currentusernumber }} 
+            </h2>
+        {% endif %}
     </br>
     </div>
 

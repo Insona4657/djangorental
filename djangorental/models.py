@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
+from django.db.models.signals import post_save
 
 # Create your models here.
 
@@ -9,12 +10,20 @@ class User(AbstractUser):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    address = models.CharField(max_length=100, null=True, blank=True)
-    number = PhoneNumberField(null=True, blank=True, unique=True)
+    address = models.CharField(max_length=100, default="update your address here")
+    number = PhoneNumberField(default="update your contact here")
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
-    
+
+#Create UserProfile when new user signs up
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        user_profile = UserProfile(user=instance)
+        user_profile.save()
+
+post_save.connect(create_profile, sender=User)
+
 class Category(models.Model):
     categoryName = models.CharField(max_length=50)
 
