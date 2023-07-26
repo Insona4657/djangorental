@@ -1,27 +1,95 @@
 {% extends "djangorental/layout.html" %}
 
 {% block body %}
-    <h2>Products</h2>
-
-    <div class="row mx-3">
-        {% for product in products %}
-            <div class="card mx-3" style="width: 18rem;">
-                <img class="card-img-top" src="{{ product.image_file }}" alt="{{ product.name }}">
-                <div class="card-body">
-                    <h5 class="card-title">{{ product.name }}</h5>
-                    <ul>
-                        {% for sentence in product.get_description_sentences %}
-                          <li>{{ sentence }}</li>
-                        {% endfor %}
-                      </ul>
-                    <strong>
-                    <p class="card-text" >RM{{ product.price }}/Month</p>
-                    </strong>
-                </br>
-                    <a href="{% url 'product' id=product.id %}" class="btn btn-primary">Check Details</a>
+    <div class="index">
+        <br><br><br>
+        <h2>Products</h2>
+        <div class="row mx-3">
+            {% for product in products %}
+                <div class="card mx-3" style="width: 18rem;">
+                    <img class="card-img-top" src="{{ product.image_file }}" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <ul>
+                            {% for sentence in product.get_description_sentences %}
+                            <li>{{ sentence }}</li>
+                            {% endfor %}
+                        </ul>
+                        <strong>
+                        <p class="card-text" >RM{{ product.price }}/Month</p>
+                        </strong>
+                    </br>
+                        <a href="{% url 'product' id=product.id %}" class="btn btn-primary">Check Details</a>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
-    
+
+    <div class="bgManually_footer_top">
+        <div class="site-footer">
+          <div class="secManually_footer_top_ctrl_width">
+            <div class="row">
+              <div class="col-md-4 secManually_footer_top_left_ebox">
+                <div class="secManually_footer_top_left_box">
+                  <div class="secManually_footer_top_left_logo_imgx">
+                    <img class="logo" alt="" class="img-fluid" src="static/djangorental/yy_logo_sample.jpg"></div>
+                  <ul class="secManually_footer_top_left_payment_imgx">
+                    <li>
+                      <img alt="" class="img-fluid" src="https://cdn1.npcdn.net/images/1664529432footer-payment1.webp?md5id=f743456c2e829c48b24c85ebd8024eba&amp;new_width=1600&amp;new_height=1600&amp;size=max&amp;type=8&amp;w=1686755673&amp;off_wm=1&amp;from=png"></li>
+                    <li>
+                      <img alt="" class="img-fluid" src="https://cdn1.npcdn.net/images/1664529443footer-payment2.webp?md5id=f743456c2e829c48b24c85ebd8024eba&amp;new_width=1600&amp;new_height=1600&amp;size=max&amp;type=8&amp;w=1686755673&amp;off_wm=1&amp;from=png"></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-4 secManually_footer_top_middle_ebox">
+                <div class="secManually_footer_top_middle_box">
+                  <div class="secManually_footer_top_middle_title">
+                    Product Category</div>
+                  <ul class="secManually_footer_top_middle_menu">
+                    <li>
+                      <a href="">Wheelchairs</a></li>
+                    <li>
+                      <a href="">Hospital Beds</a></li>
+                    <li>
+                      <a href="/">Anti Bedsore</a></li>
+                    <li>
+                      <a href="/">Hospital Furniture</a></li>
+                    <li>
+                      <a href="/">Incontinence Care</a></li>
+                    <li>
+                      <a href="/">Medical Devices</a></li>
+                    <li>
+                      <a href="">Walking Aids</a></li>
+                    <li>
+                      <a href="">Rehabilitation</a></li>
+                    <li>
+                      <a href="">Special Needs</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-4 secManually_footer_top_right_ebox">
+                <div class="secManually_footer_top_right_box">
+                  <div class="secManually_footer_top_right_title">
+                    Contact Us</div>
+                  <div class="secManually_footer_top_right_content">
+                    <div class="secManually_footer_top_right_branch">
+                    <ul class="secManually_footer_top_right_contact">
+                      <li>
+                        <a href="https://wa.me/60126058565?text=" target="_blank"> <i class="fab fa-whatsapp"></i> <span>+6012-605-8565</span> </a></li>
+                      <li>
+                        <a href=""> <i class="fas fa-envelope"></i> <span>Our Email Link</span> </a></li>
+                      <li>
+                        <a href="" target="_blank"> <i class="fas fa-globe"></i> <span>Our Website Link</span> </a></li>
+                      <li>
+                        <i class="far fa-clock"></i> <span>Monday-Sunday (10.00am-6.00pm)</span></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 {% endblock %}
