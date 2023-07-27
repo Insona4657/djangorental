@@ -11,7 +11,7 @@ urlpatterns = [
     path("createProduct/", views.createProduct, name="createProduct"),
     path("Product/<int:id>", views.product, name="product"),
     path("addComment/<int:id>", views.addComment, name="addComment"),
-    path("category", views.displayCategory, name="displayCategory"),
+    path("sample", views.sample, name="sample"),
     path("account", views.account, name="account"),
     path("password-reset/", 
          auth_views.PasswordResetView.as_view(template_name='djangorental/password_reset.html'), 
@@ -25,4 +25,5 @@ urlpatterns = [
     path("password-reset-complete/", 
          auth_views.PasswordResetCompleteView.as_view(template_name='djangorental/password_reset_complete.html'), 
          name="password_reset_complete"),
+    
 ]

@@ -5,6 +5,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import User, Category, Product, Comment, UserProfile
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def addComment(request, id):
     name = Product.objects.get(pk=id)
@@ -19,7 +20,7 @@ def addComment(request, id):
     newComment.save()
     return HttpResponseRedirect(reverse('Product',args=(id, )))
 
-def displayCategory(request):
+def index(request):
     if request.method == "POST":
         categoryselected = request.POST['category']
         category = Category.objects.get(categoryName=categoryselected)
@@ -31,10 +32,21 @@ def displayCategory(request):
         })
     else:
         activeproduct = Product.objects.filter(isActive=True)
+        paginator = Paginator(activeproduct, 6)
+        page = request.GET.get('page')
         allCategories = Category.objects.all()
-        return render(request, "djangorental/category.html", {
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver the first page
+            products = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g 9999), deliver the last page of results
+            products = paginator.page(paginator.num_pages)
+        return render(request, "djangorental/index.html", {
             "categories": allCategories,
-            "products": activeproduct
+            "products": activeproduct,
+            "products": products
         })
 
 
@@ -71,7 +83,7 @@ def createProduct(request):
         newProduct.save()
         return HttpResponseRedirect(reverse(index))
 
-def index(request):
+def sample(request):
     activeProducts = Product.objects.filter(isActive=True)
     allCategories = Category.objects.all()
 
@@ -80,7 +92,7 @@ def index(request):
         "categories": allCategories,
     }
 
-    return render(request, "djangorental/index.html", context)
+    return render(request, "djangorental/sample.html", context)
 
 
 def login_view(request):
@@ -197,3 +209,9 @@ def account(request):
         "currentuseraddress" : currentuseraddress,
         "currentusernumber": currentusernumber,           
     })
+
+def custom_403_view(request, exception):
+    return render(request, 'djangorental/error/403.html', status=403)
+
+def custom_404_view(request, exception):
+    return render(request, 'djangorental/error/404.html', status=404)

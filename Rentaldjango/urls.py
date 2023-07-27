@@ -23,3 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("djangorental.urls"))
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = 'djangorental.views.custom_404_view'
+handler403 = 'djangorental.views.custom_403_view'
