@@ -1,9 +1,11 @@
 {% extends "djangorental/layout.html" %}
 
 {% block body %}
-    <br><br><br>
-    <h2>Account</h2>
-
+    <br>
+    <div class="container">
+    <div class="card text-white bg-nav-top my-5 py-4 text-center">
+        <div class="card-body"><h1 class="fw-bold text-black">Account Details</h1></div>
+    </div>
     <div class = "content-section">
         <h2>
             Username : {{ user.username }}
@@ -48,5 +50,5 @@
         </div>
         <input class="btn btn-primary" type="submit" value="Update Details">
     </form>
-
+</div>
 {% endblock %}

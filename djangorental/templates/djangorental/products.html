@@ -1,23 +1,70 @@
 {% extends "djangorental/layout.html" %}
 
 {% block body %}
-<br><br><br>
-    <h2>Products</h2>
-
-    <div class="row mx-3">
-        {% if product in products is not None %}
-            {% for product in products %}
-                <div class="card mx-3" style="width: 18rem;">
-                    <img class="card-img-top" src="{{ product.image_file }}" alt="{{ product.name }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="card-text">{{ product.description }}</p>
-                        <p class="card-text">Current Price: ${{ product.price }}</p>
-                        <a href="{% url 'product' id=product.id %}" class="btn btn-primary">Check Details</a>
-                    </div>
-                </div>
-            {% endfor %}
-        {% endif%}
+<div class="card text-white bg-nav-top my-5 py-4 text-center">
+    <div class="card-body"><h1 class="fw-bold text-black">Products</h1></div>
+</div>
+<div class="row mx-5">
+    {% for product in products %}
+    <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card" style="width: 50rem;">
+            <img class="card-img-top" src="{{ product.image_file }}" alt="{{ product.name }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ product.title }}</h5>
+                <ul id="descriptionList{{ forloop.counter }}" style="display: none;">
+                    {% for sentence in product.get_description_sentences %}
+                    <li>{{ sentence }}</li>
+                    {% endfor %}
+                </ul>
+                <button class="btn btn-primary" onclick="toggleDescription({{ forloop.counter }})">Description</button>
+                <strong>
+                    <p class="card-text">RM{{ product.price }}/Month</p>
+                </strong>
+                </br>
+            </div>
+        </div>
     </div>
+    {% endfor %}
+</div> 
+
+<script>
+    function toggleDescription(index) {
+        var descriptionList = document.getElementById("descriptionList" + index);
+        var button = document.querySelector("button");
+
+        if (descriptionList.style.display === "none") {
+            descriptionList.style.display = "block";
+            button.textContent = "Hide Description";
+        } else {
+            descriptionList.style.display = "none";
+            button.textContent = "";
+        }
+    }
+</script>
+
+<!-- Pagination Links -->
+<div class="d-flex justify-content-center mt-5">
+    {% if products.has_previous %}
+      <a class="btn btn-primary mr-2" href="?page=1">First</a>
+      <a class="btn btn-primary mr-2" href="?page={{ products.previous_page_number }}">Previous</a>
+    {% endif %}
+  
+    {% if products.has_next %}
+      <a class="btn btn-primary ml-2" href="?page={{ products.next_page_number }}">Next</a>
+      <a class="btn btn-primary ml-2" href="?page={{ products.paginator.num_pages }}">Last</a>
+    {% endif %}
+  </div>
+  <br>
+<!-- Footer-->
+<footer class="py-5 bg-nav-bottom">
+  <div class="container px-4 px-lg-5">
+    <p class="m-0 text-center text-black">Copyright &copy; YY Rehab Rental 2023</p>
+    <ul class="m-0 text-center text-black">
+        <a class="nav-link active" href="">Hospital Beds</a>
+        <a class="nav-link active" href="">Anti Bedsore</a>
+        <a class="nav-link active" href="">Oxygen Concentrators</a>
+        <a class="nav-link active" href="">Wheelchairs</a>
+    </ul>
+</div>
     
 {% endblock %}

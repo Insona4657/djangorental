@@ -4,7 +4,7 @@
     <div class="index">
         <br><br><br>
         <h2>Products</h2>
-        <form action ="{% url 'displayCategory' %}" method="POST" class="my-3">
+        <form action ="" method="POST" class="my-3">
           {% csrf_token %}
           <label for="category">Choose a Category:</label>
           <select name="category" id="category">
@@ -30,7 +30,7 @@
                         <p class="card-text" >RM{{ product.price }}/Month</p>
                         </strong>
                     </br>
-                        <a href="{% url 'product' id=product.id %}" class="btn btn-primary">Check Details</a>
+                        <a href="" class="btn btn-primary">Check Details</a>
                     </div>
                 </div>
             {% endfor %}

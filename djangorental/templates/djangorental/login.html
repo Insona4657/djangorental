@@ -1,9 +1,11 @@
 {% extends "djangorental/layout.html" %}
 
 {% block body %}
-<br><br><br>
-    <h2>Login</h2>
-
+<br>
+    <div class="container">
+    <div class="card text-white bg-nav-top my-5 py-4 text-center">
+        <div class="card-body"><h1 class="fw-bold text-black">Login</h1></div>
+    </div>
     {% if message %}
         <div>{{ message }}</div>
     {% endif %}
@@ -18,8 +20,10 @@
         </div>
         <input class="btn btn-primary" type="submit" value="Login">
     </form>
-
-    Forget Password? <a href="{% url 'password_reset' %}">Reset Password.</a>
-    Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+    </br>
+        Forget Password? <a href="{% url 'password_reset' %}">Reset Password Here</a>
+    </br>
+        Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+    </div>
 
 {% endblock %}

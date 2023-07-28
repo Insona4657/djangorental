@@ -146,18 +146,23 @@ def register(request):
     else:
         return render(request, "djangorental/register.html")
     
-def product(request, id):
-    name = product.objects.get(pk=id)
-    isProductinWatchlist = request.user in name.watchlist.all()
-    allComments = Comment.objects.filter(comment_on_product=name)
-    isOwner = request.user == name.owner
-    currentuserusername = request.user.username
-
-    return render(request, "djangorental/product.html", {
-        "product": name,
-        "allComments": allComments,
-        "isOwner": isOwner,
-        "currentuserusername": currentuserusername,
+def item_page(request):
+    activeproduct = Product.objects.filter(isActive=True)
+    paginator = Paginator(activeproduct, 6)
+    page = request.GET.get('page')
+    allCategories = Category.objects.all()
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver the first page
+        products = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g 9999), deliver the last page of results
+        products = paginator.page(paginator.num_pages)
+    return render(request, "djangorental/products.html", {
+        "categories": allCategories,
+        "products": activeproduct,
+        "products": products,
     })
 
 @login_required

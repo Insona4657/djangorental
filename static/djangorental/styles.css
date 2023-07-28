@@ -10830,7 +10830,10 @@ textarea.form-control-lg {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 250px;
+  max-height:50px;
+  width:auto;
+  padding: 0;
+  touch-action: manipulation;
   font-size: 12px;
   line-height: 1.2;
   font-weight: 700;
@@ -10841,19 +10844,21 @@ textarea.form-control-lg {
   padding: 5px 10px 5px 20px;
   transition: all .5s;
   margin-left: 10px;
+  height: 1%;
   }
 
 .logo {
   border-radius: 25px;
   border: 2px solid #73AD21;
-  width: 150px;
-  height: 65px;
+  max-height: 50px;
+  width:auto;
 }
 
 .img-fluid-header {
   margin-left: 10px;
-  width: 50px;
-  height: 50px;
+  max-height: 50px;
+  width:auto;
+  padding: 0;
 }
 
 .bg-nav-top {
@@ -10872,3 +10877,4 @@ textarea.form-control-lg {
   font-size: 50px;
   font-weight: 700px;
 }
+
