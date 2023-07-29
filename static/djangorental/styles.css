@@ -10840,7 +10840,7 @@ textarea.form-control-lg {
   color: #fff;
   text-decoration: none!important;
   background-color: #428bca;
-  border-radius: 25px;
+  border-radius: 20px;
   padding: 5px 10px 5px 20px;
   transition: all .5s;
   margin-left: 10px;
@@ -10848,8 +10848,7 @@ textarea.form-control-lg {
   }
 
 .logo {
-  border-radius: 25px;
-  border: 2px solid #73AD21;
+  border-radius: 20px;
   max-height: 50px;
   width:auto;
 }
@@ -10878,3 +10877,31 @@ textarea.form-control-lg {
   font-weight: 700px;
 }
 
+.tab {
+  cursor: pointer;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.active-tab {
+  background-color: #007bff;
+  color: #fff;
+}
+.product-card {
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+  display: inline-block;
+}
+.product-image {
+  max-width: 100%;
+  height: auto;
+}
+.product-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}

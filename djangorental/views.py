@@ -147,22 +147,35 @@ def register(request):
         return render(request, "djangorental/register.html")
     
 def item_page(request):
-    activeproduct = Product.objects.filter(isActive=True)
-    paginator = Paginator(activeproduct, 6)
-    page = request.GET.get('page')
-    allCategories = Category.objects.all()
+   # Get active products and categorize them as "Rental" and "Non-Rental"
+    rental_products = Category.objects.get(categoryName="Rental")
+    non_rental_products = Category.objects.get(categoryName="Non-Rental")
+    active_rental_products = Product.objects.filter(isActive=True, category=rental_products)
+    active_non_rental_products = Product.objects.filter(isActive=True, category=non_rental_products)
+    
+    # Paginate the active rental products
+    rental_paginator = Paginator(active_rental_products, 6)
+    rental_page = request.GET.get('rental_page')
     try:
-        products = paginator.page(page)
+        rental_products = rental_paginator.page(rental_page)
     except PageNotAnInteger:
-        # If page is not an integer, deliver the first page
-        products = paginator.page(1)
+        rental_products = rental_paginator.page(1)
     except EmptyPage:
-        # If page is out of range (e.g 9999), deliver the last page of results
-        products = paginator.page(paginator.num_pages)
+        rental_products = rental_paginator.page(rental_paginator.num_pages)
+
+    # Paginate the active non-rental products
+    non_rental_paginator = Paginator(active_non_rental_products, 6)
+    non_rental_page = request.GET.get('non_rental_page')
+    try:
+        non_rental_products = non_rental_paginator.page(non_rental_page)
+    except PageNotAnInteger:
+        non_rental_products = non_rental_paginator.page(1)
+    except EmptyPage:
+        non_rental_products = non_rental_paginator.page(non_rental_paginator.num_pages)
+
     return render(request, "djangorental/products.html", {
-        "categories": allCategories,
-        "products": activeproduct,
-        "products": products,
+        "rental_products": rental_products,
+        "non_rental_products": non_rental_products,
     })
 
 @login_required

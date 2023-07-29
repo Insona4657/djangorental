@@ -1,70 +1,93 @@
 {% extends "djangorental/layout.html" %}
 
 {% block body %}
-<div class="card text-white bg-nav-top my-5 py-4 text-center">
-    <div class="card-body"><h1 class="fw-bold text-black">Products</h1></div>
+<h1>Product Categories</h1>
+<div>
+    <div class="tab" onclick="toggleCategory('rental')" id="rental-tab">Rental Products</div>
+    <div class="tab" onclick="toggleCategory('non_rental')" id="non_rental-tab">Non-Rental Products</div>
 </div>
-<div class="row mx-5">
-    {% for product in products %}
-    <div class="col-md-4 mb-4 d-flex justify-content-center">
-        <div class="card" style="width: 50rem;">
-            <img class="card-img-top" src="{{ product.image_file }}" alt="{{ product.name }}">
-            <div class="card-body">
-                <h5 class="card-title">{{ product.title }}</h5>
-                <ul id="descriptionList{{ forloop.counter }}" style="display: none;">
-                    {% for sentence in product.get_description_sentences %}
-                    <li>{{ sentence }}</li>
-                    {% endfor %}
-                </ul>
-                <button class="btn btn-primary" onclick="toggleDescription({{ forloop.counter }})">Description</button>
-                <strong>
-                    <p class="card-text">RM{{ product.price }}/Month</p>
-                </strong>
-                </br>
-            </div>
-        </div>
+
+<div id="rental-products" class="product-row">
+    {% for product in rental_products %}
+    <div class="product-card">
+        <h2>{{ product.title }}</h2>
+        <img class="product-image" src="{{ product.image_file.url }}" alt="{{ product.title }}">
+        <p>Price: RM{{ product.price }}/Month</p>
     </div>
     {% endfor %}
-</div> 
+</div>
+
+<div id="non_rental-products" class="product-row" style="display: none;">
+    {% for product in non_rental_products %}
+    <div class="product-card">
+        <h2>{{ product.title }}</h2>
+        <img class="product-image" src="{{ product.image_file.url }}" alt="{{ product.title }}">
+        <p>Price: RM{{ product.price }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Pagination for Rental Products -->
+{% if rental_products.has_other_pages %}
+<div class="pagination">
+    <span class="step-links">
+        {% if rental_products.has_previous %}
+        <a href="?rental_page=1">&laquo; first</a>
+        <a href="?rental_page={{ rental_products.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ rental_products.number }} of {{ rental_products.paginator.num_pages }}.
+        </span>
+
+        {% if rental_products.has_next %}
+        <a href="?rental_page={{ rental_products.next_page_number }}">next</a>
+        <a href="?rental_page={{ rental_products.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+
+<!-- Pagination for Non-Rental Products -->
+{% if non_rental_products.has_other_pages %}
+<div class="pagination">
+    <span class="step-links">
+        {% if non_rental_products.has_previous %}
+        <a href="?non_rental_page=1">&laquo; first</a>
+        <a href="?non_rental_page={{ non_rental_products.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ non_rental_products.number }} of {{ non_rental_products.paginator.num_pages }}.
+        </span>
+
+        {% if non_rental_products.has_next %}
+        <a href="?non_rental_page={{ non_rental_products.next_page_number }}">next</a>
+        <a href="?non_rental_page={{ non_rental_products.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
 
 <script>
-    function toggleDescription(index) {
-        var descriptionList = document.getElementById("descriptionList" + index);
-        var button = document.querySelector("button");
+    function toggleCategory(category) {
+        const rentalTab = document.getElementById('rental-tab');
+        const nonRentalTab = document.getElementById('non_rental-tab');
+        const rentalProducts = document.getElementById('rental-products');
+        const nonRentalProducts = document.getElementById('non_rental-products');
 
-        if (descriptionList.style.display === "none") {
-            descriptionList.style.display = "block";
-            button.textContent = "Hide Description";
-        } else {
-            descriptionList.style.display = "none";
-            button.textContent = "";
+        if (category === 'rental') {
+            rentalTab.classList.add('active-tab');
+            nonRentalTab.classList.remove('active-tab');
+            rentalProducts.style.display = 'flex';
+            nonRentalProducts.style.display = 'none';
+        } else if (category === 'non_rental') {
+            rentalTab.classList.remove('active-tab');
+            nonRentalTab.classList.add('active-tab');
+            rentalProducts.style.display = 'none';
+            nonRentalProducts.style.display = 'flex';
         }
     }
 </script>
-
-<!-- Pagination Links -->
-<div class="d-flex justify-content-center mt-5">
-    {% if products.has_previous %}
-      <a class="btn btn-primary mr-2" href="?page=1">First</a>
-      <a class="btn btn-primary mr-2" href="?page={{ products.previous_page_number }}">Previous</a>
-    {% endif %}
-  
-    {% if products.has_next %}
-      <a class="btn btn-primary ml-2" href="?page={{ products.next_page_number }}">Next</a>
-      <a class="btn btn-primary ml-2" href="?page={{ products.paginator.num_pages }}">Last</a>
-    {% endif %}
-  </div>
-  <br>
-<!-- Footer-->
-<footer class="py-5 bg-nav-bottom">
-  <div class="container px-4 px-lg-5">
-    <p class="m-0 text-center text-black">Copyright &copy; YY Rehab Rental 2023</p>
-    <ul class="m-0 text-center text-black">
-        <a class="nav-link active" href="">Hospital Beds</a>
-        <a class="nav-link active" href="">Anti Bedsore</a>
-        <a class="nav-link active" href="">Oxygen Concentrators</a>
-        <a class="nav-link active" href="">Wheelchairs</a>
-    </ul>
-</div>
     
 {% endblock %}
